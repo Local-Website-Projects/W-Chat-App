@@ -1,13 +1,38 @@
-import React, { useRef, useEffect } from "react";
+import React, {useRef, useEffect, useState} from "react";
+import axios from "axios";
 
-function ChatBody({ userType }) {
+function ChatBody({ userType, receiverId, receiverName }) {
     const messagesEndRef = useRef(null);
+    const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
         }
     }, [userType]);
+
+    useEffect(() => {
+        const fetchChats = () => {
+            console.log(`fetching chat ${receiverId}`);
+            // Append the userId as a query parameter in the GET request
+            axios.get(`fetch_chats.php?receiverId=${receiverId}`, { withCredentials: true })
+                .then((response) => {
+                    if (Array.isArray(response.data)) {
+                        setMessages(response.data);
+                        console.log(messages);
+                    } else {
+                        console.error("Invalid response format:", response.data);
+                    }
+                })
+                .catch((error) => console.error("Error fetching chats:", error));
+        };
+
+        fetchChats();
+        const intervalId = setInterval(fetchChats, 5000); // Fetch data every 5 seconds
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(intervalId);
+    }, [receiverId]);
 
     return (
         <>
@@ -36,7 +61,7 @@ function ChatBody({ userType }) {
                             <div className="media chat-name align-items-center text-truncate">
                                 <div className="avatar bg-info text-light"><span>U</span></div>
                                 <div className="media-body align-self-center ml-3">
-                                    <h6 className="text-truncate mb-0">User Name</h6>
+                                    <h6 className="text-truncate mb-0">{receiverName}</h6>
                                     <small className="text-muted">Online</small>
                                 </div>
                             </div>
@@ -46,37 +71,29 @@ function ChatBody({ userType }) {
                     {/* Step 3: Attach the ref to the scrollable container */}
                     <div className="chat-content p-2" id="messageBody" ref={messagesEndRef}>
                         <div className="container">
-                            {/* Your chat messages go here */}
                             <div className="message-day">
-                                <div className="message-divider sticky-top pb-2" data-label="Yesterday">&nbsp;</div>
-                                {/* Example message */}
-                                <div className="message">
-                                    <div className="message-wrapper">
-                                        <div className="message-content">
-                                            <span>I have to give a presentation on global warming on Friday, and I am so nervous.</span>
-                                        </div>
-                                    </div>
-                                    <div className="message-options">
-                                        <div className="avatar bg-info text-light"><span>A</span></div>
-                                        <span className="message-date">9:12am</span>
-                                    </div>
-                                </div>
-                                <div className="message self">
-                                    <div className="message-wrapper">
-                                        <div className="message-content">
-                                            <span>I have to give a presentation on global warming on Friday, and I am so nervous.</span>
-                                        </div>
-                                    </div>
-                                    <div className="message-options">
-                                        <div className="avatar bg-info text-light"><span>A</span></div>
-                                        <span className="message-date">9:12am</span>
-                                    </div>
-                                </div>
+                                {messages.length <= 0 ? (
+                                    <p>No messages yet!</p>
+                                ) : (
+                                    messages.map((msg) => (
+                                            <div className="message">
+                                                <div className="message-wrapper">
+                                                    <div className="message-content">
+                                                        <span>{msg.message}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="message-options">
+                                                    <div className="avatar bg-info text-light"><span>{receiverName.charAt(0)}</span></div>
+                                                    <span className="message-date">9:12am</span>
+                                                </div>
+                                            </div>
+                                    ))
+                                )}
 
                             </div>
                         </div>
 
-                        {/* Optional: Add a dummy element at the bottom to scroll into view */}
+                        <div className="chat-finished" id="chat-finished"></div>
                         <div ref={messagesEndRef}></div>
                     </div>
 
@@ -86,7 +103,7 @@ function ChatBody({ userType }) {
                                 <button className="btn btn-secondary btn-icon btn-minimal btn-sm" type="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <svg className="hw-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                               d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
                                 </button>

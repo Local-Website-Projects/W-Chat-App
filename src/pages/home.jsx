@@ -12,7 +12,8 @@ function Home() {
     const [error, setError] = useState(false);
     const [userName, setUserName] = useState('User');
     const [userType, setUserType] = useState('');
-    const [childData, setChildData] = useState("");
+    const [receiverId, setReceiverId] = useState('');
+    const [receiverName, setReceiverName] = useState('');
 
     useEffect(() => {
         const token = localStorage.getItem("userToken");
@@ -36,6 +37,7 @@ function Home() {
                 setUserType(response.data.user_type);
             } else {
                 setError(response.data.message || "Failed to fetch status.");
+                console.log(error);
             }
         } catch (err) {
             setError("Failed to fetch session data");
@@ -58,6 +60,13 @@ function Home() {
         localStorage.setItem("chatOpen", "true");  // Persist chatOpen state in localStorage
     };
 
+    const handleReceiverId = (sData, name) => {
+        setReceiverId(sData);
+        setReceiverName(name);
+        setChatOpen(true);
+        localStorage.setItem("chatOpen", "true");
+    };
+
 
     return (
         <div className="main-layout">
@@ -66,10 +75,10 @@ function Home() {
             {/*left sidebar component ends*/}
 
             {/*chats sidebar starts*/}
-            <Chatheads userType={userType}/>
+            <Chatheads userType={userType} receiverID={handleReceiverId}/>
             {/*chats sidebar ends*/}
 
-            <main className="main">
+            <main className="main main-visible">
                 {/*default message area start*/}
                 {
                     !chatOpen && (
@@ -83,7 +92,7 @@ function Home() {
                 {/*chat page starts*/}
                 {
                     chatOpen && (
-                        <ChatBody userType={userType}/>
+                        <ChatBody userType={userType} receiverId={receiverId} receiverName = {receiverName}/>
                     )
                 }
 
