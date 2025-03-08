@@ -67,7 +67,6 @@ function Chatheads({ userType, receiverID }) {
                                                         <div className="contacts-content">
                                                             <div className="contacts-info">
                                                                 <h6 className="chat-name text-truncate">{chat.name}</h6>
-                                                                <div className="chat-time">Just now</div>
                                                             </div>
                                                             <div className="contacts-texts">
                                                                 <p className="text-truncate">{chat.message}</p>

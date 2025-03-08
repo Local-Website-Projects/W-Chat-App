@@ -92,7 +92,7 @@ function Home() {
                 {/*chat page starts*/}
                 {
                     chatOpen && (
-                        <ChatBody userType={userType} receiverId={receiverId} receiverName = {receiverName}/>
+                        <ChatBody userType={userType} receiverId={receiverId !== '' ? receiverId : 1} receiverName = {receiverName !== '' ? receiverName : 'Admin'}/>
                     )
                 }
 
