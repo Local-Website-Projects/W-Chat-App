@@ -22,7 +22,7 @@ function Signup () {
     };
 
     const handleSignupSubmit = (e) => {
-        const url = '/user_signup.php';
+        const url = '/api/user_signup.php';
         let fData = new FormData();
         fData.append('name', name);
         fData.append('phone', phone);

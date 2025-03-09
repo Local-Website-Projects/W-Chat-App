@@ -7,7 +7,7 @@ function Chatheads({ userType, receiverID }) {
 
     useEffect(() => {
         const fetchChats = () => {
-            axios.get("fetch_chats.php", { withCredentials: true })
+            axios.get("/api/fetch_chats.php", { withCredentials: true })
                 .then((response) => {
                     if (Array.isArray(response.data)) {
                         setData(response.data);

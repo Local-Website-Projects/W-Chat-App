@@ -26,7 +26,7 @@ function Home() {
     const fetchUserData = async () => {
         try {
             const token = localStorage.getItem("userToken");
-            const response = await axios.get("/fetch_user_details.php", {
+            const response = await axios.get("/api/fetch_user_details.php", {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },

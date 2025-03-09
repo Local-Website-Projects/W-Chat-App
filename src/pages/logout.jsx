@@ -7,7 +7,7 @@ function Logout() {
     const handleLogout = async () => {
         try {
             // Send a logout request to the backend
-            const response = await fetch("/user_logout.php", {
+            const response = await fetch("/api/user_logout.php", {
                 method: "POST",
                 credentials: "include",
             });

@@ -8,7 +8,7 @@ function Login() {
 
     const userLogin = (e) => {
         e.preventDefault();
-        const url = '/user_login.php';
+        const url = '/api/user_login.php';
         let fData = new FormData();
         fData.append('email', email);
         fData.append('password',password);
