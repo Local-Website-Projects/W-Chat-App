@@ -26,7 +26,7 @@ function ChatBody({ userType, receiverId, receiverName }) {
     useEffect(() => {
         const fetchChats = () => {
             axios
-                .get(`/api/fetch_message.php?receiverId=${receiverId}`, { withCredentials: true })
+                .get(`api/fetch_message.php?receiverId=${receiverId}`, { withCredentials: true })
                 .then((response) => {
                     if (Array.isArray(response.data)) {
                         setMessages(response.data);
@@ -46,7 +46,7 @@ function ChatBody({ userType, receiverId, receiverName }) {
     const sendMessage = (e) => {
         if (e) e.preventDefault(); // Prevent form submission if event exists
 
-        const url = "/api/send_message.php";
+        const url = "api/send_message.php";
         let fData = new FormData();
         fData.append("msg", msg);
         fData.append("receiver", receiverId);
@@ -70,7 +70,7 @@ function ChatBody({ userType, receiverId, receiverName }) {
 
     const fetchUser = () => {
         axios
-            .get(`/api/fetch_user.php`, { withCredentials: true })
+            .get(`api/fetch_user.php`, { withCredentials: true })
             .then((response) => {
                 if (response.data.status === 'Success') {
                     setUser(response.data.userId);
@@ -100,16 +100,14 @@ function ChatBody({ userType, receiverId, receiverName }) {
         <div className="chats">
             <div className="chat-body">
                 <div className="chat-header">
-                    <button
+                    <Link to='/Logout'
                         className="btn btn-secondary btn-icon btn-minimal btn-sm text-muted d-xl-none"
-                        type="button"
-                        data-close=""
                     >
                         <svg className="hw-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                   d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                    </button>
+                    </Link>
 
                     {userType === "0" && (
                         <div className="media chat-name align-items-center text-truncate">
@@ -134,7 +132,6 @@ function ChatBody({ userType, receiverId, receiverName }) {
                         </div>
                     )}
                 </div>
-
                 <div className="chat-content p-2" id="messageBody">
                     <div className="container">
                         <div className="message-day">
@@ -154,10 +151,10 @@ function ChatBody({ userType, receiverId, receiverName }) {
                                                               to=""
                                                               onClick={(e) => {
                                                                   e.preventDefault();
-                                                                  handleImageClick(`http://localhost/W-ChatApp-Admin/${msg.file}`);
+                                                                  handleImageClick(`https://chat.dotest.click/${msg.file}`);
                                                               }}>
                                                             <img className="img-fluid rounded" style={{ width: "200px", height: "auto" }}
-                                                                 src={`http://localhost/W-ChatApp-Admin/${msg.file}`} alt="" />
+                                                                 src={`https://chat.dotest.click/${msg.file}`} alt="" />
                                                         </Link>
                                                     </div>
                                                 </div>

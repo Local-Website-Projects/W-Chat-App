@@ -26,7 +26,7 @@ function Home() {
     const fetchUserData = async () => {
         try {
             const token = localStorage.getItem("userToken");
-            const response = await axios.get("/api/fetch_user_details.php", {
+            const response = await axios.get("api/fetch_user_details.php", {
                 headers: {
                     "Authorization": `Bearer ${token}`,
                 },
@@ -78,7 +78,7 @@ function Home() {
             <Chatheads userType={userType} receiverID={handleReceiverId}/>
             {/*chats sidebar ends*/}
 
-            <main className="main main-visible">
+            <main className={`main ${userType !== 1 ? 'main-visible' : ''}`}>
                 {/*default message area start*/}
                 {
                     !chatOpen && (
@@ -92,7 +92,8 @@ function Home() {
                 {/*chat page starts*/}
                 {
                     chatOpen && (
-                        <ChatBody userType={userType} receiverId={receiverId !== '' ? receiverId : 1} receiverName = {receiverName !== '' ? receiverName : 'Admin'}/>
+                        <ChatBody userType={userType} receiverId={receiverId !== '' ? receiverId : 1}
+                                  receiverName={receiverName !== '' ? receiverName : 'Admin'}/>
                     )
                 }
 
